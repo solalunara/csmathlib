@@ -35,19 +35,19 @@ public class Function
         get => f( x );
     }
 
-    public Complex Derivative( double x, double dx = .1 )
+    public Complex Derivative( double x )
     {
         return ( f( x + dx ) - f( x ) ) / dx;
     }
-    public Function Derivative( double dx = .1 )
+    public Function Derivative()
     {
-        return new Function( x => Derivative( x, dx ) );
+        return new Function( x => Derivative( x ) );
     }
-    public Complex DerivativeN( double x, int N, double dx = .1 )
+    public Complex DerivativeN( double x, int N )
     {
         if ( N == 1 )
-            return Derivative( x, dx );
-        return Derivative( dx ).DerivativeN( x, N - 1, dx );
+            return Derivative( x );
+        return Derivative().DerivativeN( x, N - 1 );
     }
 
     public Function Integral( Complex C )
@@ -84,5 +84,17 @@ public class Function
     public Function InverseFourier()
     {
         return new Function( z => InverseFourier( z ) );
+    }
+
+    public Function Convolution( Function g )
+    {
+        return new Function( t =>
+        {
+            Function l = new Function( tau =>
+            {
+                return f( tau ) * g[ t - tau ];
+            } ).Integral( 0 );
+            return l[ Infinity ] - l[ -Infinity ];
+        } );
     }
 }
