@@ -3,8 +3,8 @@
 public static class Statics
 {
     public static readonly Complex i = new( 0, 1 );
-    public static double Infinity = 300;
-    public static double dx = .1;
+    public static double Infinity = 6;
+    public static double dx = .01;
 
     public static Complex Exp( Complex z ) =>
         Math.Pow( Math.E, z.a ) * ( Math.Cos( z.b ) + Math.Sin( z.b ) * i );

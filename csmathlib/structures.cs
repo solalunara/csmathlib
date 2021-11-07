@@ -50,81 +50,47 @@ public class Function
         return Derivative( dx ).DerivativeN( x, N - 1, dx );
     }
 
-    public Polynomial TaylorSeries( int N )
+    public Function Integral( Complex C )
     {
-        List<(Complex, int)> terms = new();
-        terms.Add( (f( 0 ).a, 0) );
-        for ( int b = 1; b < N; ++b )
+        return new Function( x =>
         {
-            terms.Add( (DerivativeN( 0, b ) / Factorial( b ), b) );
-        }
-        return new Polynomial( terms.ToArray() );
-    }
-
-    private long Factorial( long N )
-    {
-        if ( N <= 1 )
-            return 1;
-        return N * Factorial( N - 1 );
-    }
-
-    public Complex Fourier( Complex w, Complex C )
-    {
-        Function fn = new Function( z => f( z ) * Exp( -2 * Math.PI * i * z * w ) ).TaylorSeries( 10 ).Integral( C );
-        return fn[ 1000 ] - fn[ -1000 ] + C;
-    }
-    public Function Fourier( Complex C )
-    {
-        return new Function( z => Fourier( z, C ) );
-    }
-    public Complex InverseFourier( Complex x, Complex C )
-    {
-        Function fn = new Function( z => f( z ) * Exp( 2 * Math.PI * i * z * x ) ).TaylorSeries( 10 ).Integral( C );
-        return fn[ 1000 ] - fn[ -1000 ] + C;
-    }
-    public Function InverseFourier( Complex C )
-    {
-        return new Function( z => InverseFourier( z, C ) );
-    }
-}
-
-public class Polynomial : Function
-{
-    public Polynomial( params (Complex, int)[] terms ) :
-        base( x =>
-        {
-            Complex ret = 0;
-            for ( int a = 0; a < terms.Length; ++a )
-                ret += terms[ a ].Item1 * Math.Pow( x, terms[ a ].Item2 );
+            Complex ret = C;
+            for ( double y = 0; y < Math.Abs( x ); y += dx )
+            {
+                Complex c = f( y * Math.Sign( x ) );
+                ret += f( y * Math.Sign( x ) ) * Math.Sign( x ) * dx;
+            }
             return ret;
-        } )
-    {
-        this.terms = terms;
+        } );
     }
-
-    private (Complex, int)[] terms;
-
-    public Polynomial Integral( Complex C )
-    {
-        List<(Complex, int)> NewTerms = new();
-        for ( int a = 0; a < terms.Length; ++a )
-        {
-            if ( terms[ a ].Item2 != 0 && terms[ a ].Item2 != -1 )
-                NewTerms.Add( (terms[ a ].Item1 / terms[ a ].Item2, terms[ a ].Item2 + 1) );
-        }
-        NewTerms.Add( (C, 0) );
-        return new Polynomial( NewTerms.ToArray() );
-    }
-    public Polynomial Derivative()
-    {
-        List<(Complex, int)> NewTerms = new();
-        for ( int a = 0; a < terms.Length; ++a )
-        {
-            if ( terms[ a ].Item2 != 0 )
-                NewTerms.Add( (terms[ a ].Item1 * terms[ a ].Item2, terms[ a ].Item2 - 1) );
-        }
-        return new Polynomial( NewTerms.ToArray() );
-    }
-
     
+
+    public Complex Fourier( double w )
+    {
+        Function fn = new Function( z => f( z ) * Exp( -2 * Math.PI * i * z * w ) ).Integral( 0 );
+        Complex ret = fn[ Infinity ] - fn[ -Infinity ];
+        if ( ret.a >= Infinity - .1 || ret.a <= -Infinity + .1 )
+            ret.a = double.PositiveInfinity * Math.Sign( ret.a );
+        if ( ret.b >= Infinity - .1 || ret.b <= -Infinity + .1 )
+            ret.b = double.PositiveInfinity * Math.Sign( ret.b );
+        return ret;
+    }
+    public Function Fourier()
+    {
+        return new Function( z => Fourier( z ) );
+    }
+    public Complex InverseFourier( double x )
+    {
+        Function fn = new Function( z => f( z ) * Exp( 2 * Math.PI * i * z * x ) ).Integral( 0 );
+        Complex ret = fn[ Infinity ] - fn[ -Infinity ];
+        if ( ret.a >= Infinity - .1 || ret.a <= -Infinity + .1 )
+            ret.a = double.PositiveInfinity * Math.Sign( ret.a );
+        if ( ret.b >= Infinity - .1 || ret.b <= -Infinity + .1 )
+            ret.b = double.PositiveInfinity * Math.Sign( ret.b );
+        return ret;
+    }
+    public Function InverseFourier()
+    {
+        return new Function( z => InverseFourier( z ) );
+    }
 }
