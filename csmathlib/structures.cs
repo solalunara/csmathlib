@@ -69,10 +69,6 @@ public class Function
     {
         Function fn = new Function( z => f( z ) * Exp( -2 * Math.PI * i * z * w ) ).Integral( 0 );
         Complex ret = fn[ Infinity ] - fn[ -Infinity ];
-        if ( ret.a >= Infinity - .1 || ret.a <= -Infinity + .1 )
-            ret.a = double.PositiveInfinity * Math.Sign( ret.a );
-        if ( ret.b >= Infinity - .1 || ret.b <= -Infinity + .1 )
-            ret.b = double.PositiveInfinity * Math.Sign( ret.b );
         return ret;
     }
     public Function Fourier()
@@ -83,10 +79,6 @@ public class Function
     {
         Function fn = new Function( z => f( z ) * Exp( 2 * Math.PI * i * z * x ) ).Integral( 0 );
         Complex ret = fn[ Infinity ] - fn[ -Infinity ];
-        if ( ret.a >= Infinity - .1 || ret.a <= -Infinity + .1 )
-            ret.a = double.PositiveInfinity * Math.Sign( ret.a );
-        if ( ret.b >= Infinity - .1 || ret.b <= -Infinity + .1 )
-            ret.b = double.PositiveInfinity * Math.Sign( ret.b );
         return ret;
     }
     public Function InverseFourier()
