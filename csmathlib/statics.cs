@@ -3,7 +3,7 @@
 public static class Statics
 {
     public static readonly Complex i = new( 0, 1 );
-    public static double Infinity = 6;
+    public static double Infinity = 2 * Math.PI;
     public static double dx = .01;
 
     public static Complex Exp( Complex z ) =>
