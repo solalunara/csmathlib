@@ -1,10 +1,12 @@
 ﻿namespace csmathlib;
-    
+
+//δ is dirac delta
 public static class Statics
 {
     public static readonly Complex i = new( 0, 1 );
     public static double Infinity = 2 * Math.PI;
     public static double dx = .01;
+    public static readonly Function δ = new Function( x => 1 ).Fourier();
 
     public static Complex Exp( Complex z ) =>
         Math.Pow( Math.E, z.a ) * ( Math.Cos( z.b ) + Math.Sin( z.b ) * i );
