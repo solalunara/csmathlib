@@ -15,7 +15,13 @@ public struct Complex
     public static Complex operator +( Complex a, Complex b ) => new( a.a + b.a, a.b + b.b );
     public static Complex operator -( Complex a, Complex b ) => new( a.a - b.a, a.b - b.b );
     public static Complex operator *( Complex a, Complex b ) => new( a.a * b.a - a.b * b.b, a.b * b.a + a.a * b.b );
-    public static Complex operator /( Complex a, Complex b ) => a * new Complex( b.a / ( b.a * b.a + b.b * b.b ), -b.b / ( b.a * b.a + b.b * b.b ) );
+    public static Complex operator /( Complex a, Complex b )
+    {
+        if ( Math.Abs( b.a * b.b ) > .1 )
+            return a * new Complex( b.a / ( b.a * b.a + b.b * b.b ), -b.b / ( b.a * b.a + b.b * b.b ) );
+
+        return 0;
+    }
 
     public static implicit operator Complex( double a ) => new( a, 0 );
 
