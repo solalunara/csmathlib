@@ -20,7 +20,7 @@ public struct Complex
         if ( Math.Abs( b.a * b.b ) > .1 )
             return a * new Complex( b.a / ( b.a * b.a + b.b * b.b ), -b.b / ( b.a * b.a + b.b * b.b ) );
 
-        return 0;
+        return 2 * Infinity;
     }
 
     public static implicit operator Complex( double a ) => new( a, 0 );
