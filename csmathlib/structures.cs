@@ -17,10 +17,10 @@ public struct Complex
     public static Complex operator *( Complex a, Complex b ) => new( a.a * b.a - a.b * b.b, a.b * b.a + a.a * b.b );
     public static Complex operator /( Complex a, Complex b )
     {
-        if ( Math.Abs( b.a * b.b ) > .1 )
+        if ( Math.Abs( b.a ) > .001 || Math.Abs( b.b ) > .001 )
             return a * new Complex( b.a / ( b.a * b.a + b.b * b.b ), -b.b / ( b.a * b.a + b.b * b.b ) );
 
-        return 2 * Infinity;
+        throw new DivideByZeroException( $"Cannot divide by complex number {b}" );
     }
 
     public static implicit operator Complex( double a ) => new( a, 0 );

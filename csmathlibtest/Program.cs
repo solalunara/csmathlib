@@ -11,9 +11,9 @@ using static csmathlib.Statics;
 //
 
 Function X = new Function( x => x ).Fourier();
-Function y = new Function( w => X[ w ] / ( 2 * Math.PI * i * w - 1 ) ).InverseFourier();
+Function y = new Function( w => X[ w ] / ( 2 * Math.PI * i * w ) ).InverseFourier();
 
-for ( double t = 0; t < 30; t += .5 )
+for ( double t = -1; t < 1; t += .05 )
 {
     Console.WriteLine( $"{t:F3}: {y[ t ]}" );
 }
